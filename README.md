@@ -213,7 +213,84 @@ En la práctica, lo recomendable es **combinar varios métodos** y, sobre todo,
 comprobar que los grupos obtenidos **tienen sentido para el problema real**.
 
 ## 5. Algoritmos
+
 ### 5.1 K-Means
+
+**Mecanismo**
+
+K-Means divide los datos en **k clusters**, cada uno representado por su centroide.
+Funciona de forma iterativa:
+
+1. **Inicialización:** se colocan k centroides iniciales.
+2. **Asignación:** cada punto se asigna al centroide más cercano (normalmente con
+   distancia euclidiana).
+3. **Actualización:** cada centroide se mueve a la **media** de los puntos de su
+   cluster (de ahí el nombre *means*).
+4. **Repetición:** se repiten los pasos 2 y 3 hasta que los centroides dejan de
+   moverse (**convergencia**).
+
+El objetivo es minimizar la **inercia** (suma de distancias al cuadrado de cada
+punto a su centroide). Para evitar una mala inicialización se usa **K-Means++**, que
+elige centroides iniciales alejados entre sí (es la opción por defecto en
+scikit-learn).
+
+**Ventajas**
+- Sencillo de entender e implementar.
+- Muy rápido y escalable a grandes volúmenes de datos.
+- Los centroides facilitan la interpretación de cada grupo.
+
+**Desventajas**
+- Hay que fijar k de antemano.
+- Supone clusters **esféricos** y de tamaño parecido; falla con formas irregulares.
+- Sensible a los **outliers**, que desplazan los centroides.
+- El resultado depende de la inicialización.
+- Requiere **escalar** las variables, porque se basa en distancias.
+
+**Casos de uso comunes**
+- Segmentación de clientes en marketing.
+- Compresión de imágenes (reducir los colores a k colores principales).
+- Agrupación de documentos o productos similares.
+
+**Aplicación propia: adicción al móvil en adolescentes**
+
+En mi proyecto final del curso de Data Analytics de IT Academy (Barcelona Activa)
+utilicé K-Means sobre un dataset de **3.000 adolescentes** (Kaggle, datos
+sintéticos). El análisis general mostraba que la mayoría tenía un nivel de adicción
+alto, pero quería entender **cómo afecta esa adicción a sus vidas de forma
+distinta**.
+
+- **Variables:** horas de uso diario, sueño, redes sociales, videojuegos, tiempo de
+  estudio, rendimiento académico, autoestima, ansiedad, depresión y control parental.
+- **Preprocesamiento:** escalado con `StandardScaler`.
+- **Elección de k:** método del codo (WCSS para k = 1–10), que indicó **k = 3**.
+
+| Cluster | Perfil | Uso diario | Rend. académico | Ansiedad | Depresión | Control parental |
+|---------|--------|-----------|-----------------|----------|-----------|------------------|
+| 0 · Riesgo bajo | **Resilient Adolescents** (adolescentes resilientes) | 5,0 h | 73,8 | 2,7 | 5,1 | 0,50 |
+| 1 · Riesgo medio | **High-Functioning Anxious Adolescents** (alto rendimiento, ansiosos) | 4,2 h | 81,0 | 7,7 | 4,5 | 0,43 |
+| 2 · Riesgo alto | **Vulnerable Adolescents** (adolescentes vulnerables) | 5,9 h | 69,6 | 6,9 | 6,9 | 0,61 |
+
+- **Cluster 0 – Resilientes:** rendimiento académico moderado, control parental
+  equilibrado y ansiedad baja. Mantienen la estabilidad emocional a pesar del uso
+  digital elevado. *Apoyo:* programas de alfabetización digital y hábitos saludables
+  para mantener el equilibrio.
+- **Cluster 1 – Alto rendimiento, ansiosos:** el mejor rendimiento académico y más
+  uso educativo, pero menos control parental y ansiedad alta. Son ambiciosos y
+  orientados al logro, pero están emocionalmente tensionados. *Apoyo:* gestión del
+  estrés y bienestar digital centrado en la regulación emocional.
+- **Cluster 2 – Vulnerables:** el peor rendimiento académico, la depresión más alta y
+  el mayor tiempo de uso. Tienen el control parental más alto, pero un bienestar
+  emocional bajo. *Apoyo:* mentoría, apoyo emocional, reducir el uso excesivo y
+  recuperar la implicación académica.
+
+**Conclusión:** el nivel de adicción era muy similar en los tres grupos (≈ 9/10), pero
+el clustering mostró que **su impacto es diferente** en cada perfil. Esto permite
+pasar de una conclusión general ("los adolescentes son adictos") a **intervenciones
+adaptadas a cada grupo**. Un dato interesante: el grupo con más control parental es
+el más vulnerable, lo que sugiere que el control por sí solo no basta.
+
+🔗 [Ver el proyecto](https://github.com/esrakesken/it_academy_barcelona_activa/tree/main/Lifestyle_Factors_on_Teen_Phone_Addiction)
+
 ### 5.2 Clustering Jerárquico Aglomerativo
 ### 5.3 DBSCAN
 ### 5.4 Gaussian Mixture Models (GMM)
