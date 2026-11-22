@@ -128,6 +128,17 @@ En resumen: K-Means busca **centros**, el jerárquico construye un **árbol de
 similitudes** y DBSCAN busca **zonas densas**. Por eso DBSCAN es especialmente útil
 cuando los grupos tienen formas irregulares o cuando hay mucho ruido en los datos.
 
+### 3.3 Ejemplo de aplicación: detección de fraude
+Imaginemos que analizamos las transacciones con tarjeta de crédito en Barcelona para
+detectar fraude. En este caso **DBSCAN es más adecuado que K-Means** por dos motivos:
+
+1. **No sabemos cuántos tipos de gasto "normal" existen**, así que no podemos fijar k.
+   DBSCAN encuentra los grupos automáticamente a partir de la densidad.
+2. **Las transacciones fraudulentas suelen ser diferentes a todas las demás.** K-Means
+   las metería a la fuerza en algún grupo, mientras que DBSCAN las marca directamente
+   como **ruido (`-1`)**, lo que nos da una lista de transacciones sospechosas para
+   revisar.
+
 ## 4. Elección del número de clusters y evaluación
 
 ## 5. Algoritmos
