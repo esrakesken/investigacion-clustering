@@ -81,6 +81,53 @@ la altura deseada.
 
 ## 3. Clustering basado en densidad (DBSCAN)
 
+### 3.1 ¿En qué consiste?
+El clustering basado en densidad parte de una idea sencilla: **un cluster es una zona
+donde los puntos están muy juntos (alta densidad)**, separada de otras zonas por
+regiones con pocos puntos. Los puntos aislados, que no pertenecen a ninguna zona
+densa, se consideran **ruido**.
+
+El algoritmo más conocido es **DBSCAN** (*Density-Based Spatial Clustering of
+Applications with Noise*), que utiliza dos hiperparámetros:
+
+- **`eps` (ε):** el radio del vecindario alrededor de cada punto, es decir, qué
+  distancia consideramos "cerca".
+- **`min_samples`:** el número mínimo de puntos que debe haber dentro de ese radio
+  para que una zona se considere densa.
+
+Con estos dos valores, DBSCAN clasifica cada punto en uno de tres tipos:
+
+| Tipo de punto | Descripción |
+|---------------|-------------|
+| **Núcleo (core)** | Tiene al menos `min_samples` vecinos dentro de su radio `eps` |
+| **Frontera (border)** | No es núcleo, pero está dentro del radio de un punto núcleo |
+| **Ruido (noise)** | No es núcleo ni frontera; se etiqueta como `-1` |
+
+**Funcionamiento:** el algoritmo elige un punto núcleo y crea un cluster con todos sus
+vecinos. Si alguno de esos vecinos también es núcleo, el cluster se sigue
+**expandiendo** a través de él. Cuando ya no se puede expandir más, busca otro punto
+núcleo no visitado y empieza un nuevo cluster. Los puntos que no se alcanzan desde
+ningún núcleo quedan como ruido.
+
+*Ejemplo:* si miramos desde un dron la playa de la Barceloneta en verano, veremos
+grupos de personas muy juntas (clusters) con formas distintas, y algunas personas
+caminando solas (ruido). Nadie nos dice cuántos grupos hay: aparecen solos por la
+densidad.
+
+### 3.2 Diferencias con el clustering basado en centroides y el jerárquico
+
+|                        | Centroides (K-Means)    | Jerárquico                      | Densidad (DBSCAN)              |
+|------------------------|-------------------------|---------------------------------|--------------------------------|
+| ¿Hay que fijar k?      | Sí                      | No (se corta el dendrograma)    | **No**, los clusters surgen de la densidad |
+| Forma de los clusters  | Esférica                | Depende del *linkage*           | **Cualquier forma** (alargada, curva, anillos...) |
+| Outliers               | Los asigna siempre a un grupo | Los asigna siempre a un grupo | **Los detecta como ruido** |
+| Parámetros clave       | k                       | Tipo de enlace y altura de corte | `eps` y `min_samples`         |
+| Punto débil            | Hay que conocer k; sensible a outliers | Lento con muchos datos | Difícil elegir `eps`; falla si los clusters tienen densidades muy distintas |
+
+En resumen: K-Means busca **centros**, el jerárquico construye un **árbol de
+similitudes** y DBSCAN busca **zonas densas**. Por eso DBSCAN es especialmente útil
+cuando los grupos tienen formas irregulares o cuando hay mucho ruido en los datos.
+
 ## 4. Elección del número de clusters y evaluación
 
 ## 5. Algoritmos
