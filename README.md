@@ -141,6 +141,77 @@ detectar fraude. En este caso **DBSCAN es más adecuado que K-Means** por dos mo
 
 ## 4. Elección del número de clusters y evaluación
 
+### 4.1 ¿Por qué es importante elegir bien k y los hiperparámetros?
+En el aprendizaje no supervisado no tenemos etiquetas, así que **no podemos calcular
+métricas como el accuracy**. Sin embargo, el algoritmo siempre devuelve un resultado,
+aunque no tenga sentido. Por eso la elección de los hiperparámetros es clave:
+
+- **Si k es demasiado pequeño**, grupos realmente distintos se fusionan en uno solo y
+  perdemos información.
+- **Si k es demasiado grande**, un grupo real se divide en subgrupos artificiales que
+  no tienen significado.
+- **En DBSCAN**, un `eps` demasiado pequeño hace que casi todos los puntos sean ruido,
+  y uno demasiado grande une todo en un único cluster.
+
+Para tomar esta decisión se utilizan **métricas internas**, que evalúan la calidad
+del agrupamiento usando solo los propios datos.
+
+### 4.2 Método del codo (Elbow method)
+Se basa en la **inercia** (o WCSS, *Within-Cluster Sum of Squares*): la suma de las
+distancias al cuadrado de cada punto a su centroide. Cuanto menor es la inercia, más
+compactos son los grupos.
+
+**Procedimiento:**
+1. Ejecutar K-Means para distintos valores de k (por ejemplo, de 1 a 10).
+2. Calcular la inercia para cada k.
+3. Representar k (eje X) frente a la inercia (eje Y).
+4. Elegir el punto donde la curva forma un **"codo"**, es decir, donde la inercia deja
+   de bajar rápidamente.
+
+La inercia siempre disminuye al aumentar k (con tantos clusters como puntos sería 0),
+por eso no buscamos el mínimo, sino el punto a partir del cual **añadir más clusters
+ya no aporta una mejora significativa**.
+
+- **Ventaja:** sencillo y visual.
+- **Desventaja:** a veces el codo no es claro y la elección es subjetiva.
+
+### 4.3 Coeficiente de silueta (Silhouette score)
+Mide lo bien que encaja cada punto en su cluster comparado con el cluster vecino más
+cercano. Para cada punto *i* se calcula:
+
+- **a(i):** distancia media a los puntos de **su propio cluster** (cohesión).
+- **b(i):** distancia media a los puntos del **cluster vecino más cercano** (separación).
+
+$$s(i) = \frac{b(i) - a(i)}{\max(a(i),\ b(i))}$$
+
+| Valor | Interpretación |
+|-------|----------------|
+| Cercano a **+1** | El punto está bien agrupado y lejos de otros clusters |
+| Cercano a **0** | El punto está en la frontera entre dos clusters |
+| **Negativo** | El punto probablemente está en el cluster equivocado |
+
+Se calcula la media de todos los puntos para varios valores de k y se elige el k con
+la **silueta media más alta**.
+
+- **Ventaja:** da un valor numérico objetivo y tiene en cuenta tanto la cohesión como
+  la separación.
+- **Desventaja:** es costoso con muchos datos y puede dar valores engañosos con
+  clusters de formas irregulares.
+
+### 4.4 Otros métodos
+- **Índice de Davies-Bouldin:** mide la similitud entre cada cluster y su más
+  parecido. **Cuanto menor, mejor.**
+- **Índice de Calinski-Harabasz:** relación entre la dispersión entre clusters y
+  dentro de ellos. **Cuanto mayor, mejor.**
+- **BIC / AIC:** se usan en los Gaussian Mixture Models para elegir el número de
+  componentes. **Cuanto menor, mejor.**
+- **Dendrograma:** en el clustering jerárquico, se corta donde aparece el salto
+  vertical más grande.
+- **Gráfico k-distance:** en DBSCAN, ayuda a elegir `eps` buscando también un "codo".
+
+En la práctica, lo recomendable es **combinar varios métodos** y, sobre todo,
+comprobar que los grupos obtenidos **tienen sentido para el problema real**.
+
 ## 5. Algoritmos
 ### 5.1 K-Means
 ### 5.2 Clustering Jerárquico Aglomerativo
