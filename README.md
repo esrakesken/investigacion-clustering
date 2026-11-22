@@ -44,6 +44,41 @@ El clustering se usa principalmente para:
 
 ## 2. Clustering basado en centroides vs. jerárquico
 
+### 2.1 Clustering basado en centroides (particional)
+Este enfoque divide los datos en un número **k de grupos fijado de antemano**. Cada
+grupo está representado por un **centroide** (el punto medio del grupo) y cada dato se
+asigna al centroide más cercano. El algoritmo va recolocando los centroides y
+reasignando los puntos hasta que los grupos dejan de cambiar.
+
+El resultado es una **partición plana**: cada punto pertenece a un único grupo.
+
+**Algoritmo representativo:** K-Means.
+
+### 2.2 Clustering jerárquico
+Este enfoque no divide los datos de una sola vez, sino que construye una **jerarquía
+de grupos anidados** que se representa con un árbol llamado **dendrograma**. Existen
+dos estrategias:
+
+- **Aglomerativa (de abajo arriba):** cada punto empieza siendo su propio grupo y, en
+  cada paso, se unen los dos grupos más parecidos, hasta que todo queda en un solo grupo.
+- **Divisiva (de arriba abajo):** se parte de un único grupo con todos los datos y se
+  va dividiendo.
+
+No es necesario fijar k al principio: se elige después, "cortando" el dendrograma a
+la altura deseada.
+
+**Algoritmo representativo:** Clustering Jerárquico Aglomerativo.
+
+### 2.3 Diferencias principales
+
+|                        | Basado en centroides            | Jerárquico                              |
+|------------------------|---------------------------------|-----------------------------------------|
+| Número de clusters (k) | Hay que fijarlo antes           | Se elige después cortando el dendrograma |
+| Resultado              | Partición plana                 | Grupos anidados (árbol)                 |
+| Escalabilidad          | Rápido, funciona con muchos datos | Lento y costoso con muchos datos      |
+| Interpretabilidad      | Centroides fáciles de interpretar | El dendrograma muestra cómo se forman los grupos |
+| Forma de los clusters  | Tiende a grupos esféricos       | Depende del tipo de enlace (*linkage*)  |
+
 ## 3. Clustering basado en densidad (DBSCAN)
 
 ## 4. Elección del número de clusters y evaluación
