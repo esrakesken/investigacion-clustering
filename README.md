@@ -299,6 +299,51 @@ el más vulnerable, lo que sugiere que el control por sí solo no basta.
 🔗 [Ver el proyecto](https://github.com/esrakesken/it_academy_barcelona_activa/tree/main/Lifestyle_Factors_on_Teen_Phone_Addiction)
 
 ### 5.2 Clustering Jerárquico Aglomerativo
+
+**Mecanismo**
+
+Es un método **de abajo arriba** (*bottom-up*) que construye una jerarquía de
+clusters:
+
+1. **Inicio:** cada punto es un cluster independiente.
+2. **Distancias:** se calcula la distancia entre todos los clusters.
+3. **Fusión:** se unen los **dos clusters más cercanos** y se actualizan las distancias.
+4. **Repetición:** se repite hasta que todos los puntos forman un único cluster.
+
+Cada fusión queda registrada en un **dendrograma**, un árbol en el que la altura de
+cada unión indica lo diferentes que eran los grupos. Para obtener el número final de
+clusters se **corta el dendrograma** a una altura determinada; una buena práctica es
+cortar donde aparece el salto vertical más grande.
+
+Un parámetro clave es el **criterio de enlace (*linkage*)**, que define cómo se mide
+la distancia entre dos grupos:
+
+| Linkage | Distancia entre grupos | Efecto |
+|---------|------------------------|--------|
+| **Single** | Entre los dos puntos **más cercanos** | Clusters alargados, en cadena |
+| **Complete** | Entre los dos puntos **más lejanos** | Clusters compactos |
+| **Average** | **Media** de todas las distancias entre pares | Intermedio |
+| **Ward** | Une los grupos que **menos aumentan la varianza** interna | Clusters equilibrados (opción por defecto en scikit-learn) |
+
+**Ventajas**
+- No es necesario fijar k de antemano.
+- El dendrograma es muy visual y ayuda a entender la estructura de los datos.
+- Es determinista: con los mismos datos siempre da el mismo resultado.
+- Según el *linkage*, puede detectar clusters de distintas formas.
+
+**Desventajas**
+- **Coste computacional alto**: necesita calcular y guardar todas las distancias, por
+  lo que no escala bien a grandes volúmenes de datos.
+- Las fusiones son definitivas: un error en un paso no se puede corregir después.
+- Sensible al ruido y a los outliers (especialmente con *single linkage*).
+- El resultado depende mucho del *linkage* elegido.
+
+**Casos de uso comunes**
+- Biología: árboles filogenéticos y análisis de expresión génica.
+- Segmentación de clientes en conjuntos de datos pequeños o medianos.
+- Organización de documentos en temas y subtemas.
+- Análisis de redes sociales y comunidades.
+
 ### 5.3 DBSCAN
 ### 5.4 Gaussian Mixture Models (GMM)
 
