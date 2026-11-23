@@ -1,5 +1,26 @@
 # Investigación: Algoritmos de Clustering
 
+**Autora:** Esra Kesken · Bootcamp de Inteligencia Artificial – Factoría F5
+
+Este documento recoge una investigación sobre los **algoritmos de clustering**
+(aprendizaje no supervisado): qué son, sus principales enfoques, cómo evaluar sus
+resultados y cuándo usar cada uno. Incluye ejemplos aplicados a Barcelona y un caso
+real de un proyecto propio.
+
+## Índice
+1. [Aprendizaje no supervisado y clustering](#1-aprendizaje-no-supervisado-y-clustering)
+2. [Clustering basado en centroides vs. jerárquico](#2-clustering-basado-en-centroides-vs-jerárquico)
+3. [Clustering basado en densidad (DBSCAN)](#3-clustering-basado-en-densidad-dbscan)
+4. [Elección del número de clusters y evaluación](#4-elección-del-número-de-clusters-y-evaluación)
+5. [Algoritmos](#5-algoritmos)
+   - [5.1 K-Means](#51-k-means)
+   - [5.2 Clustering Jerárquico Aglomerativo](#52-clustering-jerárquico-aglomerativo)
+   - [5.3 DBSCAN](#53-dbscan)
+   - [5.4 Gaussian Mixture Models (GMM)](#54-gaussian-mixture-models-gmm)
+6. [Tabla comparativa](#6-tabla-comparativa)
+7. [Guía práctica: ¿qué algoritmo elegir?](#7-guía-práctica-qué-algoritmo-elegir)
+8. [Fuentes](#8-fuentes)
+
 ## 1. Aprendizaje no supervisado y clustering
 
 ### 1.1 ¿Qué es el aprendizaje no supervisado?
