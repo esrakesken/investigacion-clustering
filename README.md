@@ -345,6 +345,46 @@ la distancia entre dos grupos:
 - Análisis de redes sociales y comunidades.
 
 ### 5.3 DBSCAN
+
+**Mecanismo**
+
+DBSCAN agrupa los puntos según la **densidad**: un cluster es una zona donde hay
+muchos puntos cerca unos de otros. Usa dos hiperparámetros, `eps` (radio del
+vecindario) y `min_samples` (mínimo de vecinos para que una zona sea densa), y
+clasifica cada punto como **núcleo**, **frontera** o **ruido**. Los clusters crecen
+expandiéndose desde los puntos núcleo, y los puntos aislados se etiquetan como ruido
+(`-1`). *(El funcionamiento se explica en detalle en la [sección 3](#3-clustering-basado-en-densidad-dbscan).)*
+
+**¿Cómo elegir los hiperparámetros?**
+- **`min_samples`:** como regla general, al menos el número de dimensiones + 1; en la
+  práctica se suele usar **2 × número de dimensiones**, y un valor mayor si los datos
+  tienen mucho ruido.
+- **`eps`:** se usa el **gráfico k-distance**: se calcula para cada punto la distancia
+  a su k-ésimo vecino más cercano (k = `min_samples`), se ordenan de menor a mayor y
+  se elige el valor donde la curva forma un **codo**.
+
+**Ventajas**
+- No hay que fijar el número de clusters.
+- Detecta clusters de **cualquier forma** (alargados, curvos, en anillo...).
+- Identifica automáticamente los **outliers** como ruido.
+- Los outliers no distorsionan los clusters (a diferencia de K-Means).
+
+**Desventajas**
+- Es muy sensible al valor de `eps`, que puede ser difícil de elegir.
+- Funciona mal cuando los clusters tienen **densidades muy diferentes**, porque un
+  único `eps` no sirve para todos. (Una variante, **HDBSCAN**, resuelve este problema.)
+- Pierde eficacia en datos con **muchas dimensiones**, donde las distancias dejan de
+  ser significativas.
+- Requiere escalar las variables.
+
+**Casos de uso comunes**
+- **Detección de anomalías y fraude** (ver el ejemplo de la sección 3.3).
+- **Datos geográficos:** encontrar zonas de alta concentración a partir de
+  coordenadas GPS. *Ej.: detectar las zonas de Barcelona donde más se dejan las
+  bicicletas de Bicing.*
+- Procesamiento de imágenes y segmentación de objetos.
+- Detección de fallos en datos de sensores.
+
 ### 5.4 Gaussian Mixture Models (GMM)
 
 ## 6. Tabla comparativa
