@@ -246,6 +246,13 @@ scikit-learn).
 - El resultado depende de la inicialización.
 - Requiere **escalar** las variables, porque se basa en distancias.
 
+*Ejemplo de sensibilidad a outliers:* si en un cluster hay cinco adolescentes que usan
+el móvil 3, 4, 4, 5 y **20** horas al día, el centroide (la media) pasa de **4 h** a
+**7,2 h** por culpa de un solo valor extremo. Ese centroide ya no representa a nadie
+del grupo y, en la siguiente iteración, algunos puntos pueden asignarse al cluster
+equivocado. Alternativas: eliminar outliers antes, usar **K-Medoids** (el centro es un
+punto real) o **DBSCAN**, que marcaría ese valor como ruido.
+
 **Casos de uso comunes**
 - Segmentación de clientes en marketing.
 - Compresión de imágenes (reducir los colores a k colores principales).
