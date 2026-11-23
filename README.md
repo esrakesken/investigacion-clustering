@@ -389,4 +389,19 @@ expandiéndose desde los puntos núcleo, y los puntos aislados se etiquetan como
 
 ## 6. Tabla comparativa
 
-## 7. Fuentes
+## 7. Guía práctica: ¿qué algoritmo elegir?
+
+A continuación se recogen algunos escenarios reales y el razonamiento para elegir el
+enfoque adecuado.
+
+| Escenario | Elección | Por qué |
+|-----------|----------|---------|
+| Un gimnasio de Barcelona quiere agrupar a sus socios según edad, frecuencia y horario, sin saber qué grupos existen. | **Aprendizaje no supervisado (clustering)** | No hay variable objetivo (`y`); los grupos se tienen que descubrir. |
+| Un colegio agrupa a sus alumnos según notas, faltas y entrega de deberes. | **Clustering para exploración, segmentación y detección de anomalías** | Permite descubrir perfiles, dar apoyo distinto a cada grupo y detectar alumnos que no encajan en ninguno. El modelo no pone nombre a los grupos: los interpretamos nosotros. |
+| 1 millón de clientes y sabemos que queremos 5 segmentos. | **K-Means** | Es rápido, escala bien y k ya se conoce. El jerárquico sería demasiado lento. |
+| Al probar varios k, la silueta media da 0,45 (k=2), 0,62 (k=3) y 0,38 (k=4). | **k = 3** | Es el valor con la silueta media más alta: grupos más cohesionados y mejor separados. |
+| 40 alumnos agrupados por intereses; no sabemos cuántos grupos hay y queremos mostrar el resultado visualmente a la dirección. | **Jerárquico aglomerativo** | No hace falta fijar k, el dendrograma es muy visual y con pocos datos su lentitud no es un problema. |
+| Uso de Bicing en zonas muy densas (Eixample) y poco densas (Horta). | **HDBSCAN** en lugar de DBSCAN | Con un único `eps`, uno pequeño convierte Horta en ruido y uno grande une los clusters del Eixample. HDBSCAN se adapta a densidades distintas. |
+| Un adolescente está justo en la frontera entre dos perfiles de riesgo y lo va a revisar un psicólogo escolar. | **GMM** | K-Means le asignaría un único grupo; GMM da la probabilidad de pertenecer a cada uno (p. ej., 55 % / 45 %), lo que muestra que es un caso dudoso que merece atención individual. |
+
+## 8. Fuentes
