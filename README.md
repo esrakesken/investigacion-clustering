@@ -317,7 +317,7 @@ pasar de una conclusión general ("los adolescentes son adictos") a **intervenci
 adaptadas a cada grupo**. Un dato interesante: el grupo con más control parental es
 el más vulnerable, lo que sugiere que el control por sí solo no basta.
 
-🔗 [Ver el proyecto](https://github.com/esrakesken/it_academy_barcelona_activa/tree/main/Lifestyle_Factors_on_Teen_Phone_Addiction)
+🔗 [Ver el proyecto](https://github.com/esrakesken/teen_phone_addiction_app)
 
 ### 5.2 Clustering Jerárquico Aglomerativo
 
@@ -529,4 +529,4 @@ enfoque adecuado.
 ### Proyecto propio
 - Kesken, E. *Lifestyle Factors on Teen Phone Addiction*, proyecto final de Data
   Analytics, IT Academy (Barcelona Activa).
-  https://github.com/esrakesken/it_academy_barcelona_activa/tree/main/Lifestyle_Factors_on_Teen_Phone_Addiction
+  https://github.com/esrakesken/teen_phone_addiction_app
