@@ -475,3 +475,37 @@ enfoque adecuado.
 | Un adolescente está justo en la frontera entre dos perfiles de riesgo y lo va a revisar un psicólogo escolar. | **GMM** | K-Means le asignaría un único grupo; GMM da la probabilidad de pertenecer a cada uno (p. ej., 55 % / 45 %), lo que muestra que es un caso dudoso que merece atención individual. |
 
 ## 8. Fuentes
+
+### Documentación oficial
+- scikit-learn. *Clustering* (User Guide).
+  https://scikit-learn.org/stable/modules/clustering.html
+- scikit-learn. *Gaussian mixture models* (User Guide).
+  https://scikit-learn.org/stable/modules/mixture.html
+- scikit-learn. *silhouette_score* (API Reference).
+  https://scikit-learn.org/stable/modules/generated/sklearn.metrics.silhouette_score.html
+
+### Material didáctico
+- Google for Developers. *Clustering* (Machine Learning course).
+  https://developers.google.com/machine-learning/clustering
+- IBM. *¿Qué es el clustering?*
+  https://www.ibm.com/es-es/think/topics/clustering
+- StatQuest with Josh Starmer (YouTube): vídeos sobre K-Means, clustering jerárquico
+  y DBSCAN. https://www.youtube.com/@statquest
+- James, G., Witten, D., Hastie, T. y Tibshirani, R. (2021). *An Introduction to
+  Statistical Learning* (2.ª ed.), cap. 12: *Unsupervised Learning*. Springer.
+  https://www.statlearning.com/
+
+### Artículos de referencia
+- Ester, M., Kriegel, H.-P., Sander, J. y Xu, X. (1996). *A density-based algorithm
+  for discovering clusters in large spatial databases with noise*. KDD-96.
+  *(artículo original de DBSCAN)*
+- Rousseeuw, P. J. (1987). *Silhouettes: a graphical aid to the interpretation and
+  validation of cluster analysis*. Journal of Computational and Applied Mathematics,
+  20, 53–65. *(origen del coeficiente de silueta)*
+- Campello, R. J. G. B., Moulavi, D. y Sander, J. (2013). *Density-based clustering
+  based on hierarchical density estimates*. PAKDD 2013. *(HDBSCAN)*
+
+### Proyecto propio
+- Kesken, E. *Lifestyle Factors on Teen Phone Addiction*, proyecto final de Data
+  Analytics, IT Academy (Barcelona Activa).
+  https://github.com/esrakesken/it_academy_barcelona_activa/tree/main/Lifestyle_Factors_on_Teen_Phone_Addiction
