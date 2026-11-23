@@ -387,7 +387,77 @@ expandiéndose desde los puntos núcleo, y los puntos aislados se etiquetan como
 
 ### 5.4 Gaussian Mixture Models (GMM)
 
+**Mecanismo**
+
+GMM supone que los datos se generan a partir de una **mezcla de varias distribuciones
+normales (gaussianas)**, y que cada una corresponde a un cluster. Cada componente se
+define con tres parámetros:
+
+| Parámetro | Significado |
+|-----------|-------------|
+| **Media (μ)** | Centro del cluster |
+| **Covarianza (Σ)** | Forma y orientación del cluster (circular, elíptico, inclinado) |
+| **Peso (π)** | Proporción de los datos que pertenece a ese cluster |
+
+Los parámetros se estiman con el algoritmo **EM (Expectation-Maximization)**:
+
+1. **Inicialización:** se colocan k gaussianas (a menudo a partir de K-Means).
+2. **Paso E (Expectation):** se calcula, para cada punto, la **probabilidad** de
+   pertenecer a cada cluster.
+3. **Paso M (Maximization):** se actualizan μ, Σ y π usando esas probabilidades.
+4. **Repetición:** hasta que los parámetros dejan de cambiar.
+
+La gran diferencia con K-Means es que GMM hace **clustering suave (*soft
+clustering*)**: en lugar de decir "este punto pertenece al cluster 1", dice "este
+punto pertenece al cluster 1 con un 70 % de probabilidad y al cluster 2 con un 30 %".
+Esto es muy útil para los puntos que están en la frontera entre dos grupos.
+
+El número de componentes se suele elegir con los criterios **BIC o AIC** (cuanto
+menor, mejor).
+
+**Ventajas**
+- Da la **probabilidad** de pertenencia a cada cluster, no solo una etiqueta.
+- Gracias a la covarianza, detecta clusters **elípticos, inclinados y de distinto
+  tamaño**, no solo esféricos como K-Means.
+- Es un modelo probabilístico: permite estimar densidades y generar nuevos datos.
+- Ofrece una forma estadística de elegir k (BIC/AIC).
+
+**Desventajas**
+- Hay que fijar el número de componentes.
+- Supone que los datos siguen distribuciones gaussianas; falla con formas muy
+  irregulares (lunas, anillos).
+- Más lento y complejo que K-Means.
+- Sensible a la inicialización; puede quedarse en un óptimo local.
+- Con pocos datos y muchas dimensiones, estimar la covarianza es difícil.
+
+**Casos de uso comunes**
+- Segmentación de clientes cuando un cliente puede encajar parcialmente en varios
+  perfiles.
+- Reconocimiento de voz y de hablantes.
+- Visión por computador: separar el fondo de los objetos en un vídeo.
+- Finanzas: modelado de riesgo y detección de anomalías (puntos con muy baja
+  probabilidad).
+
 ## 6. Tabla comparativa
+
+| Criterio | K-Means | Jerárquico aglomerativo | DBSCAN | GMM |
+|----------|---------|-------------------------|--------|-----|
+| **Enfoque** | Centroides (particional) | Jerárquico | Densidad | Probabilístico (distribuciones) |
+| **¿Hay que fijar k?** | Sí | No (se corta el dendrograma) | No | Sí (nº de componentes) |
+| **Parámetros clave** | k | *Linkage* y altura de corte | `eps`, `min_samples` | Nº de componentes, tipo de covarianza |
+| **Forma de los clusters** | Esférica | Depende del *linkage* | Cualquier forma | Elíptica |
+| **Tipo de asignación** | Dura (un solo cluster) | Dura | Dura + ruido | **Suave** (probabilidades) |
+| **Outliers** | Muy sensible | Sensible | **Los detecta como ruido** | Sensible (aunque tienen baja probabilidad) |
+| **Escalabilidad** | Muy alta | Baja | Media | Media |
+| **¿Determinista?** | No (depende de la inicialización) | Sí | Casi (salvo puntos frontera) | No (depende de la inicialización) |
+| **Cómo elegir parámetros** | Codo, silueta | Dendrograma, silueta | Gráfico k-distance | BIC / AIC |
+| **Ideal para** | Grandes datos con grupos compactos | Datos pequeños y ver la estructura | Formas irregulares y datos con ruido | Grupos solapados y casos frontera |
+
+**Resumen:** no existe un algoritmo mejor en general. La elección depende de la
+**forma de los datos**, de si **conocemos k**, de la presencia de **outliers** y del
+**tamaño del dataset**. En la práctica es recomendable probar varios algoritmos,
+compararlos con métricas como la silueta y, sobre todo, comprobar que los grupos
+**tienen sentido para el problema real**.
 
 ## 7. Guía práctica: ¿qué algoritmo elegir?
 
