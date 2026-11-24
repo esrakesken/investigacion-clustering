@@ -13,7 +13,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 import numpy as np
-from scipy.cluster.hierarchy import dendrogram, linkage
+from scipy.cluster.hierarchy import dendrogram, linkage, set_link_color_palette
 from sklearn.cluster import DBSCAN, AgglomerativeClustering, KMeans
 from sklearn.datasets import make_blobs, make_moons
 from sklearn.metrics import silhouette_score
@@ -140,16 +140,33 @@ def fig_silueta():
 
 # 5. Dendrograma (sección 5.2)
 def fig_dendrograma():
-    X, _ = make_blobs(n_samples=30, centers=3, cluster_std=0.8, random_state=SEMILLA)
+    # Pocos puntos y grupos no muy separados: así se ven bien todas las ramas
+    X, _ = make_blobs(n_samples=15, centers=[[0, 0], [4, 1], [2, 4]],
+                      cluster_std=0.9, random_state=7)
     Z = linkage(X, method="ward")
     corte = (Z[-3, 2] + Z[-2, 2]) / 2  # entre la 3.ª y la 2.ª fusión -> 3 clusters
-    fig, ax = plt.subplots(figsize=(9, 4))
-    dendrogram(Z, ax=ax, color_threshold=corte, above_threshold_color="#555555", no_labels=True)
-    ax.axhline(corte, ls="--", color=COLORES[3])
-    ax.text(ax.get_xlim()[1], corte, "  corte → 3 clusters", va="center", color=COLORES[3])
-    ax.set_ylabel("Distancia de fusión")
-    ax.set_xlabel("Puntos (cada hoja es un punto)")
-    ax.set_title("Dendrograma (linkage Ward)")
+    nombres = [f"P{i + 1}" for i in range(len(X))]
+
+    fig, (ax_pts, ax_den) = plt.subplots(1, 2, figsize=(12, 5), gridspec_kw={"width_ratios": [1, 1.6]})
+
+    set_link_color_palette(list(COLORES[:3]))
+    dend = dendrogram(Z, ax=ax_den, labels=nombres, color_threshold=corte,
+                      above_threshold_color="#555555", leaf_font_size=10)
+    set_link_color_palette(None)
+    for linea in ax_den.collections:
+        linea.set_linewidth(2.2)
+    ax_den.axhline(corte, ls="--", lw=1.5, color=COLORES[3])
+    ax_den.text(ax_den.get_xlim()[1], corte, "  corte → 3 clusters", va="center", color=COLORES[3])
+    ax_den.set_ylabel("Distancia de fusión")
+    ax_den.set_title("Dendrograma (linkage Ward)")
+
+    # Mismo color para cada punto que su rama en el dendrograma
+    color_hoja = dict(zip(dend["ivl"], dend["leaves_color_list"]))
+    ax_pts.scatter(*X.T, s=110, c=[color_hoja[n] for n in nombres], edgecolors="white", zorder=2)
+    for nombre, (x, y) in zip(nombres, X):
+        ax_pts.annotate(nombre, (x, y), xytext=(6, 5), textcoords="offset points", fontsize=9)
+    ax_pts.set_title("Los puntos")
+    sin_ejes(ax_pts)
     guardar(fig, "05_dendrograma.png")
 
 
