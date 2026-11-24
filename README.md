@@ -38,6 +38,10 @@ conocen previamente: el algoritmo los descubre. Además, el modelo no les pone n
 (solo devuelve "cluster 0", "cluster 1"...); **interpretar qué significa cada grupo
 es tarea nuestra**.
 
+![Datos sin etiquetas y grupos encontrados por K-Means](img/01_no_supervisado.png)
+
+*Figura 1. A la izquierda, los datos tal como llegan: sin etiquetas. A la derecha, los cuatro grupos que descubre K-Means; la X marca el centroide de cada uno.*
+
 ### 1.3 Diferencias con el aprendizaje supervisado
 
 |                 | Supervisado                          | No supervisado                          |
@@ -149,6 +153,10 @@ En resumen: K-Means busca **centros**, el jerárquico construye un **árbol de
 similitudes** y DBSCAN busca **zonas densas**. Por eso DBSCAN es especialmente útil
 cuando los grupos tienen formas irregulares o cuando hay mucho ruido en los datos.
 
+![K-Means, jerárquico y DBSCAN sobre los mismos datos](img/02_comparacion_enfoques.png)
+
+*Figura 2. Con dos grupos en forma de luna, K-Means y el jerárquico (Ward) cortan los datos con una línea y mezclan las lunas. DBSCAN sigue la densidad: separa bien las dos lunas y marca los puntos aislados como ruido (gris).*
+
 ### 3.3 Ejemplo de aplicación: detección de fraude
 Imaginemos que analizamos las transacciones con tarjeta de crédito en Barcelona para
 detectar fraude. En este caso **DBSCAN es más adecuado que K-Means** por dos motivos:
@@ -193,6 +201,10 @@ La inercia siempre disminuye al aumentar k (con tantos clusters como puntos ser�
 por eso no buscamos el mínimo, sino el punto a partir del cual **añadir más clusters
 ya no aporta una mejora significativa**.
 
+![Gráfico del método del codo](img/03_metodo_codo.png)
+
+*Figura 3. La inercia baja mucho hasta k = 4 y después casi no cambia: el codo indica k = 4.*
+
 - **Ventaja:** sencillo y visual.
 - **Desventaja:** a veces el codo no es claro y la elección es subjetiva.
 
@@ -213,6 +225,10 @@ $$s(i) = \frac{b(i) - a(i)}{\max(a(i),\ b(i))}$$
 
 Se calcula la media de todos los puntos para varios valores de k y se elige el k con
 la **silueta media más alta**.
+
+![Silueta media para k de 2 a 10](img/04_silueta.png)
+
+*Figura 4. Con los mismos datos de la figura 3, la silueta media es máxima en k = 4, lo que confirma el resultado del codo.*
 
 - **Ventaja:** da un valor numérico objetivo y tiene en cuenta tanto la cohesión como
   la separación.
@@ -336,6 +352,10 @@ cada unión indica lo diferentes que eran los grupos. Para obtener el número fi
 clusters se **corta el dendrograma** a una altura determinada; una buena práctica es
 cortar donde aparece el salto vertical más grande.
 
+![Dendrograma con línea de corte](img/05_dendrograma.png)
+
+*Figura 5. Abajo se unen los puntos más parecidos; arriba, los grupos más distintos. Los saltos verticales más largos están por encima de la línea roja: cortar ahí da 3 clusters.*
+
 Un parámetro clave es el **criterio de enlace (*linkage*)**, que define cómo se mide
 la distancia entre dos grupos:
 
@@ -383,6 +403,10 @@ expandiéndose desde los puntos núcleo, y los puntos aislados se etiquetan como
 - **`eps`:** se usa el **gráfico k-distance**: se calcula para cada punto la distancia
   a su k-ésimo vecino más cercano (k = `min_samples`), se ordenan de menor a mayor y
   se elige el valor donde la curva forma un **codo**.
+
+![Gráfico k-distance](img/06_k_distance.png)
+
+*Figura 6. La mayoría de puntos tiene su 5.º vecino muy cerca; al final la curva sube de golpe (son los puntos aislados). El codo, en torno a 0.3, es un buen valor para `eps`.*
 
 **Ventajas**
 - No hay que fijar el número de clusters.
@@ -432,6 +456,10 @@ La gran diferencia con K-Means es que GMM hace **clustering suave (*soft
 clustering*)**: en lugar de decir "este punto pertenece al cluster 1", dice "este
 punto pertenece al cluster 1 con un 70 % de probabilidad y al cluster 2 con un 30 %".
 Esto es muy útil para los puntos que están en la frontera entre dos grupos.
+
+![K-Means frente a GMM con clusters alargados](img/07_kmeans_vs_gmm.png)
+
+*Figura 7. Con grupos alargados e inclinados, K-Means corta con fronteras rectas y asigna mal parte de los puntos cerca de donde se tocan los grupos. GMM ajusta una elipse a cada grupo y, en la zona donde se tocan, los puntos salen más claros porque su probabilidad de pertenencia es menor.*
 
 El número de componentes se suele elegir con los criterios **BIC o AIC** (cuanto
 menor, mejor).
@@ -530,3 +558,7 @@ enfoque adecuado.
 - Kesken, E. *Lifestyle Factors on Teen Phone Addiction*, proyecto final de Data
   Analytics, IT Academy (Barcelona Activa).
   https://github.com/esrakesken/teen-phone-addiction
+### Figuras
+- Todas las figuras de este documento son de elaboración propia, con datos sintéticos
+  (`make_blobs`, `make_moons` de scikit-learn). Se pueden regenerar con
+  [`scripts/generar_figuras.py`](scripts/generar_figuras.py).
