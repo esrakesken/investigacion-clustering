@@ -147,26 +147,20 @@ def fig_dendrograma():
     corte = (Z[-3, 2] + Z[-2, 2]) / 2  # entre la 3.ª y la 2.ª fusión -> 3 clusters
     nombres = [f"P{i + 1}" for i in range(len(X))]
 
-    fig, (ax_pts, ax_den) = plt.subplots(1, 2, figsize=(12, 5), gridspec_kw={"width_ratios": [1, 1.6]})
-
+    fig, ax = plt.subplots(figsize=(8, 6))
     set_link_color_palette(list(COLORES[:3]))
-    dend = dendrogram(Z, ax=ax_den, labels=nombres, color_threshold=corte,
-                      above_threshold_color="#555555", leaf_font_size=10)
+    dendrogram(Z, ax=ax, labels=nombres, color_threshold=corte,
+               above_threshold_color="#555555", leaf_font_size=13)
     set_link_color_palette(None)
-    for linea in ax_den.collections:
-        linea.set_linewidth(2.2)
-    ax_den.axhline(corte, ls="--", lw=1.5, color=COLORES[3])
-    ax_den.text(ax_den.get_xlim()[1], corte, "  corte → 3 clusters", va="center", color=COLORES[3])
-    ax_den.set_ylabel("Distancia de fusión")
-    ax_den.set_title("Dendrograma (linkage Ward)")
-
-    # Mismo color para cada punto que su rama en el dendrograma
-    color_hoja = dict(zip(dend["ivl"], dend["leaves_color_list"]))
-    ax_pts.scatter(*X.T, s=110, c=[color_hoja[n] for n in nombres], edgecolors="white", zorder=2)
-    for nombre, (x, y) in zip(nombres, X):
-        ax_pts.annotate(nombre, (x, y), xytext=(6, 5), textcoords="offset points", fontsize=9)
-    ax_pts.set_title("Los puntos")
-    sin_ejes(ax_pts)
+    for linea in ax.collections:
+        linea.set_linewidth(3)
+    ax.axhline(corte, ls="--", lw=2, color=COLORES[3])
+    ax.text(0.99, corte + 0.15, "corte → 3 clusters", transform=ax.get_yaxis_transform(),
+            ha="right", va="bottom", color=COLORES[3], fontsize=13, fontweight="bold")
+    ax.set_ylabel("Distancia de fusión", fontsize=13)
+    ax.set_xlabel("Puntos", fontsize=13)
+    ax.tick_params(axis="y", labelsize=12)
+    ax.set_title("Dendrograma (linkage Ward)", fontsize=15)
     guardar(fig, "05_dendrograma.png")
 
 

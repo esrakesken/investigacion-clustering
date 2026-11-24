@@ -354,7 +354,7 @@ cortar donde aparece el salto vertical más grande.
 
 ![Dendrograma con línea de corte](img/05_dendrograma.png)
 
-*Figura 5. A la izquierda, 15 puntos; a la derecha, su dendrograma. Abajo se unen primero los puntos más cercanos (P3 y P4, P1 y P13...) y, cuanto más arriba, más distintos son los grupos que se fusionan. Las ramas más largas cruzan la línea roja: cortar ahí da 3 clusters, con los mismos colores que los puntos.*
+*Figura 5. Dendrograma de 15 puntos. Abajo se unen primero los puntos más cercanos (P3 y P4, P1 y P13...) y, cuanto más arriba, más distintos son los grupos que se fusionan. Las ramas más largas cruzan la línea roja: cortar ahí da 3 clusters (azul, naranja y verde).*
 
 Un parámetro clave es el **criterio de enlace (*linkage*)**, que define cómo se mide
 la distancia entre dos grupos:
